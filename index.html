@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Ethereum transaction link generator based on EIP-681 and EIP-831">
+    <meta name="author" content="Bruno Barbieri">
+
+    <title>MetaMask deep link generator</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/4.0/examples/album/album.css" rel="stylesheet">
+    <script src='js/bundle.js'></script>
+    <style>
+        #url {
+            margin-top: 20px;
+            display: block;
+            margin-bottom: 30px;
+        }
+        .field {
+            padding: 10px;
+            font-size: 17px;
+            border-radius: 5px;
+            border: 1px solid #CACACA;
+        }
+        .short-field {
+            flex: 1;
+            display: flex;
+        }
+
+        .short-field:first-child{
+            margin-right: 15px;
+        }
+        .long-field {
+            width: 100%; 
+        }
+        .center {
+            width: 150px;
+            margin: auto;
+            display: block;
+        }
+        .param-row { 
+            display: flex;
+        }
+        
+        #dapp-form, #payment-request-form, #reset, #payment-request {
+            display: none;
+        }
+     
+        .field {
+            padding: 10px;
+            font-size: 17px;
+            border-radius: 5px;
+            border: 1px solid #CACACA;
+        }
+        
+        .short-field {
+            flex: 1;
+            display: flex;
+        }
+        
+        .short-field:first-child {
+            margin-right: 15px;
+        }
+        
+        .long-field {
+            width: 100%;
+        }
+        
+        .center {
+            width: 150px;
+            margin: auto;
+            display: block;
+        }
+        
+        .param-row {
+            display: flex;
+        }
+        
+        #payment-request{
+            margin-bottom: 30px;
+        }
+
+        #form,
+        #payment-channel-request-form,
+        #reset {
+            display: none;
+        }
+        .field {
+            padding: 10px;
+            font-size: 17px;
+            border-radius: 5px;
+            border: 1px solid #CACACA;
+        }
+        .short-field {
+            flex: 1;
+            display: flex;
+        }
+
+        .short-field:first-child{
+            margin-right: 15px;
+        }
+        .long-field {
+            width: 100%;
+        }
+        .center {
+            width: 150px;
+            margin: auto;
+            display: block;
+        }
+        .param-row {
+            display: flex;
+        }
+
+        #form, #reset {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main role="main">
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1 class="jumbotron-heading">MetaMask deep link generator</h1>
+                <p class="lead text-muted">Generate MetaMask mobile deeplinks on the fly!</p>
+                <br />
+                <br />
+                <div id='buttons'>
+                    <h4 class="text-muted">What kind of deeplink do you want to generate?</h4>
+                    <br />
+                    <p>
+                        <a href="#" class="btn btn-success" onclick="showView('dapp')">Open a dapp</a>
+                        <a href="#" class="btn btn-primary" onclick="showView('payment-request')">Payment Request</a>
+                        <a href="#" class="btn btn-warning" onclick="showView('payment-channel-request')">Payment Channel Request</a>
+                    </p>
+                </div>
+                <div id='payment-request'>
+                    <h4 class="text-muted">What kind of payment request do you want to generate?</h4>
+                    <br />
+                    <p>
+                        <a href="#" class="btn btn-primary" onclick="showView('ether')">ETH Payment</a>
+                        <a href="#" class="btn btn-success" onclick="showView('erc20')">ERC20 token transfer</a>
+                    </p>
+                </div>
+                <div id='reset'>
+                    <a href='javascript:void(0)' onclick={window.location.reload()}>Start again</a>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="container">
+                    <div id='dapp-form'>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 text-center">
+                            <p>
+                                Enter your dApp url: 
+                            </p>
+                            <p>
+                                <input class="field long-field" type='text' name='dapp_url' id='dapp_url' placeholder='For ex. https://uniswap.exchange' />
+                            </p>
+                        </div>                        
+                        <div class="col-md-2"></div>
+                    </div>
+                    <div class="row">
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <p>
+                                <a href="javascript:void(0)" class="btn btn-success" onclick="generateDappUrl()">Generate URL</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id='payment-request-form'>
+                    <div class="row">
+                        <div class="col-md-1 text-center"></div>
+                        <div class="col-md-5">
+                            <p id='payment-link'>
+                                Is this a payment link?
+                                <input type='checkbox' name='is_payment' id='is_payment' />
+                            </p>
+                            <p>
+                                <input class="field long-field" type='text' name='target_address' id='target_address' placeholder='Target address' />
+                            </p>
+                            <p>
+                                <input class="field short-field" type='text' name='chain_id' id='chain_id' placeholder='Chain id (optional)' />
+                            </p>
+                            <p>
+                                <input class="field long-field" type='text' name='function_name' id='function_name' placeholder='Function name (optional)' />
+                            </p>
+                        </div>
+                        <div class="col-md-5 text-center">
+                            <p>
+                                <a id='add_parameter' href="#" class="" onclick="addNewParam()">+ Add parameter</a>
+                            </p>
+                            <div id="params-container"></div>
+                        </div>
+                        <div class="col-md-1 text-center"></div>
+                    </div>
+                    <div class="row">
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <p>
+                                <a href="javascript:void(0)" class="btn btn-success" onclick="generatePaymentUrl()">Generate URL</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id='payment-channel-request-form'>
+                    <div class="row">
+                        <div class="col-md-2 text-center"></div>
+                        <div class="col-md-2 text-center"></div>
+                        <div class="col-md-5">
+                            <p>
+                                <input class="field long-field" type='text' name='pc_target' id='pc_target' placeholder='Target address' />
+                            </p>
+                            <p>
+                                <input class="field long-field" type='text' name='pc_amount' id='pc_amount' placeholder='amount in DAI' />
+                            </p>
+                            <p>
+                                <input class="field long-field" type='text' name='pc_detail' id='pc_detail' placeholder='Detail (optional)' />
+                            </p>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <p>
+                                <a href="javascript:void(0)" class="btn btn-success" onclick="generatePaymentChannelRequestUrl()">Generate URL</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <a id='url' ></a>
+                <p id='qr-wrapper'></p>
+            </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>
+        window.jQuery || document.write('<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/jquery-slim.min.js"><\/script>')
+    </script>
+    <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
+    <script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/holder.min.js"></script>
+</body>
+
+</html>
