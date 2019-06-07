@@ -1,7 +1,7 @@
 window.ethParser = require('eth-url-parser');
 
 let paramFields = [];
-
+const BASE_URL = 'https://metamask.app.link';
 window.addNewParam = function() {
 	const ts = Date.now();
 
@@ -89,8 +89,8 @@ window.generatePaymentUrl = function() {
         
         console.log(data);
 		const url = ethParser.build(data);
-
-		renderUrl(url);
+		
+		renderUrl(url.replace('ethereum:',`${BASE_URL}/send/`));
 
 	} catch (e) {
 		alert(e.toString());
@@ -100,7 +100,7 @@ window.generatePaymentUrl = function() {
 window.generateDappUrl = function(){
 	const dapp_url = document.getElementById('dapp_url').value.trim();
 	if(dapp_url.search("https://") !== -1){
-		const url = 'https://metamask.app.link/dapp/'+dapp_url.replace('https://', '');
+		const url = `${BASE_URL}/dapp/`+dapp_url.replace('https://', '');
 		renderUrl(url);
 	} else {
 		alert('The url needs to start with https://');
@@ -110,7 +110,7 @@ window.generatePaymentChannelRequestUrl = function(){
 	const target = document.getElementById('pc_target').value.trim();
 	const amount = document.getElementById('pc_amount').value.trim();
 	const detail = document.getElementById('pc_detail').value.trim();
-	let url =  `https://metamask.app.link/payment/${target}?amount=${amount}`;
+	let url =  `${BASE_URL}/payment/${target}?amount=${amount}`;
 	if(detail){
 		url += `&detail=${detail}`;
 	}
