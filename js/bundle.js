@@ -52,7 +52,7 @@ function renderUrl(url){
 
 window.generatePaymentUrl = function() {
 	const url_scheme = "ethereum";
-	const pay_prefix = document.getElementById("is_payment").checked
+	let prefix = document.getElementById("is_payment").checked
 		? "pay"
 		: null;
 	const target_address = document.getElementById("target_address").value;
@@ -77,11 +77,15 @@ window.generatePaymentUrl = function() {
 			params[key] = val;
 		}
 	});
+
+	if(target_address.toLowerCase().substr(0,2) !== '0x'){
+		prefix = 'ens';
+	}
     
 	try {
          const data = {
 			scheme: url_scheme,
-			prefix: pay_prefix,
+			prefix,
 			target_address,
 			chain_id,
 			function_name,
