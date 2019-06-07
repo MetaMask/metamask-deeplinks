@@ -1,4 +1,4 @@
-# eip681-link-generator
-Simple web app to generate ethereum standard urls based on EIP-681
+# MetaMask deep link generator
+Simple web app to generate MetaMask deeplinks on the fly
 
-Live demo [here](https://brunobar79.github.io/eip681-link-generator/)
+Live demo [here](https://metamask.github.io/metamask-deeplinks/)

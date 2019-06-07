@@ -15,12 +15,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brunobar79/eip681-link-generator.git"
+    "url": "git+https://github.com/metamask/metamask-deeplinks.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/brunobar79/eip681-link-generator/issues"
+    "url": "https://github.com/metamask/metamask-deeplinks/issues"
   },
-  "homepage": "https://github.com/brunobar79/eip681-link-generator#readme"
+  "homepage": "https://github.com/metamask/metamask-deeplinks#readme"
 }

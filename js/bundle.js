@@ -44,7 +44,7 @@ function renderUrl(url){
 		const img = document.getElementById("qr-wrapper").firstElementChild;
 		img.src = qrCodeUrl;
 	}else{
-		 const img = document.createElement("img");
+		const img = document.createElement("img");
 		img.src = qrCodeUrl
 		document.getElementById("qr-wrapper").appendChild(img);
 	}
