@@ -78,8 +78,9 @@ window.generatePaymentUrl = function() {
 		}
 	});
 
+	// Per EIP-831 - ENS names should be prefixed with pay-
 	if(target_address.toLowerCase().substr(0,2) !== '0x'){
-		prefix = 'ens';
+		prefix = 'pay';
 	}
     
 	try {
