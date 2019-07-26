@@ -118,7 +118,7 @@ window.generatePaymentChannelRequestUrl = function(){
 	const detail = document.getElementById('pc_detail').value.trim();
 	let url =  `${BASE_URL}/payment/${target}?amount=${amount}`;
 	if(detail){
-		url += `&detail=${detail}`;
+		url += `&detail=${encodeURIComponent(detail)}`;
 	}
 	renderUrl(url);
 }
