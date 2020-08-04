@@ -63,7 +63,12 @@ window.generatePaymentUrl = function() {
 		document.getElementById("function_name").value !== ""
 			? document.getElementById("function_name").value
 			: null;
+	const decimals =
+		document.getElementById("decimals").value !== ""
+			? document.getElementById("decimals").value
+			: 18;
 	let params = {};
+
 	paramFields.forEach(ts => {
 		const key = document.getElementById(`key_${ts}`).value;
 		let val = document.getElementById(`val_${ts}`).value;
@@ -72,6 +77,14 @@ window.generatePaymentUrl = function() {
 				val += "e18";
 			}
 		}
+		console.log('key key', key, key === "uint256", function_name)
+		if (key === "uint256") {
+			if (val !== "") {
+				val += `e${decimals}`;
+				console.log('in valval', val)
+			}
+		}
+		console.log('after', val)
 		if (val !== "") {
 			params[key] = val;
 		}
@@ -83,6 +96,8 @@ window.generatePaymentUrl = function() {
 	}
     
 	try {
+        console.log('params', params);
+
          const data = {
 			scheme: url_scheme,
 			prefix,
@@ -132,13 +147,13 @@ window.showView = function(name) {
 	} else if(name === 'payment-channel-request'){
 		document.getElementById("payment-channel-request-form").style.display = "block";
 		document.getElementById("reset").style.display = "block";
-
-	}else if (name === "ether") {
+	} else if (name === "ether") {
 		document.getElementById("payment-request").style.display = "none";
 		document.getElementById("payment-request-form").style.display = "block";
 		
 		document.getElementById("function_name").style.display = "none";
 		document.getElementById("add_parameter").style.visibility = "hidden";
+		document.getElementById("decimals").style.display = "none";
 		addNewParam();
 		document.getElementById(`key_${paramFields[0]}`).value = "value";
 		document.getElementById(`key_${paramFields[0]}`).style.display = "none";
