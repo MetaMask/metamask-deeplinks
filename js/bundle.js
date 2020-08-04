@@ -64,13 +64,23 @@ window.generatePaymentUrl = function() {
 		document.getElementById("function_name").value !== ""
 			? document.getElementById("function_name").value
 			: null;
+	const decimals =
+		document.getElementById("decimals").value !== ""
+			? document.getElementById("decimals").value
+			: 18;
 	let params = {};
+
 	paramFields.forEach(ts => {
 		const key = document.getElementById(`key_${ts}`).value;
 		let val = document.getElementById(`val_${ts}`).value;
 		if (key === "value" && !function_name) {
 			if (val !== "") {
 				val += "e18";
+			}
+		}
+		if (key === "uint256") {
+			if (val !== "") {
+				val += `e${decimals}`;
 			}
 		}
 		if (val !== "") {
@@ -93,7 +103,6 @@ window.generatePaymentUrl = function() {
 			parameters: params
 		};
         
-        console.log(data);
 		const url = ethParser.build(data);
 		
 		renderUrl(url.replace('ethereum:',`${BASE_URL}/send/`));
@@ -133,13 +142,13 @@ window.showView = function(name) {
 	} else if(name === 'payment-channel-request'){
 		document.getElementById("payment-channel-request-form").style.display = "block";
 		document.getElementById("reset").style.display = "block";
-
-	}else if (name === "ether") {
+	} else if (name === "ether") {
 		document.getElementById("payment-request").style.display = "none";
 		document.getElementById("payment-request-form").style.display = "block";
 		
 		document.getElementById("function_name").style.display = "none";
 		document.getElementById("add_parameter").style.visibility = "hidden";
+		document.getElementById("decimals").style.display = "none";
 		addNewParam();
 		document.getElementById(`key_${paramFields[0]}`).value = "value";
 		document.getElementById(`key_${paramFields[0]}`).style.display = "none";
