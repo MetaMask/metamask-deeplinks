@@ -77,14 +77,11 @@ window.generatePaymentUrl = function() {
 				val += "e18";
 			}
 		}
-		console.log('key key', key, key === "uint256", function_name)
 		if (key === "uint256") {
 			if (val !== "") {
 				val += `e${decimals}`;
-				console.log('in valval', val)
 			}
 		}
-		console.log('after', val)
 		if (val !== "") {
 			params[key] = val;
 		}
@@ -96,8 +93,6 @@ window.generatePaymentUrl = function() {
 	}
     
 	try {
-        console.log('params', params);
-
          const data = {
 			scheme: url_scheme,
 			prefix,
@@ -107,7 +102,6 @@ window.generatePaymentUrl = function() {
 			parameters: params
 		};
         
-        console.log(data);
 		const url = ethParser.build(data);
 		
 		renderUrl(url.replace('ethereum:',`${BASE_URL}/send/`));
